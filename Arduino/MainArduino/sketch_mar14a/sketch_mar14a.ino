@@ -5,37 +5,49 @@
 #include <TMRpcm.h>
 #define SD_Chipselect 11
 #include <LiquidCrystal.h>
-#define playcomplete(x) ROM_playcomplete(PSTR(x)) 
 
 
-pinmode(7, )
+int E1 = 3;
+int E2 = 11;
+int M1 = 12;
+int M2 = 13;
+int vibration = 4;
 
-const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-int motorright = 7; //change
-int motorleft = 8;
-int vibration = 10;
+int trigPin = A0;
+int echoPin = A1;
+int ardConnect_1 = A4;   //pins for serial communication
+int ardConnect_2 = A5;
+
+int led1 = 0;
+int led2 = 1;
+int led3 = 2;
+
 
 TMRpcm tmrpcm;
 void setup() {
-    tmrpcm.speakerPin = 9;
+  tmrpcm.speakerPin = 9;
   tmrpcm.volume(1);
+  
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, OUTPUT);
   pinMode(vibration,OUTPUT);
-  pinMode(motorright,OUTPUT);
-  pinMode(motorleft,OUTPUT);
-  pinMode(A1,INPUT); //temperature
-  pinMode(A2,INPUT); // ultrasonic
-
+  pinMode(M1,OUTPUT);
+  pinMode(M1,OUTPUT);
+	
+  pinMode(led1,OUTPUT);
+  pinMode(led2,OUTPUT);
+  pinMode(led3,OUTPUT);
+  
 }
 void naptime(){
   analogWrite(motorpin, 0);
-  //playcomplete('Naptime.wav'); //"It's Nap Time"
+  speakerActivater(4); //"It's nap time!"
   lcd.print(""); //animation of closing eyes
-  //playcomplete('Snoring.wav');
+  speakerActivate(5) //('Snoring.wav');
   delay(10);
-  //displayLCD("Wakeup.wav"); /"Ah that was a good nap! I need coffee"
+  speakerActivate(6); //displayLCD("Wakeup.wav"); /"Ah that was a good nap! I need coffee"
   return;
-}
+})
 
 void speakerActivate(int code){
   noInterrupts();
