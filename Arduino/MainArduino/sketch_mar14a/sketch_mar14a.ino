@@ -14,11 +14,17 @@ const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 int motorright = 7; //change
 int motorleft = 8;
-int camerapin = A0;
+int vibration = 10;
+
+TMRpcm tmrpcm;
 void setup() {
     tmrpcm.speakerPin = 9;
   tmrpcm.volume(1);
   pinMode(vibration,OUTPUT);
+  pinMode(motorright,OUTPUT);
+  pinMode(motorleft,OUTPUT);
+  pinMode(A1,INPUT); //temperature
+  pinMode(A2,INPUT); // ultrasonic
 
 }
 void naptime(){
