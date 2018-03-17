@@ -14,7 +14,9 @@ args = vars(parser.parse_args())
 
 conf = json.load(open(args["conf"]))
 
+# Capture images from webcam
 camera = cv2.VideoCapture(0)
+# Use HOGs for pedestrian detection
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
@@ -27,19 +29,20 @@ while True:
 
     (grabbed, frame) = camera.read()
 
-    if not grabbed:
+    if not grabbed: # If it was not able to capture a photo, stop
         break
 
+    # Image pre-processing
     frame = imutils.resize(frame, height=conf["resolution"][0], width=conf["resolution"][1])
-    original = frame.copy()
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     gray = cv2.GaussianBlur(gray, (21,21), 0)
 
-    if frameAvg is None:
+    if frameAvg is None: # Initialize frame average
         frameAvg = gray.copy().astype("float")
         continue
 
+    # use a moving average of previous frames as the key frame to compare against
     cv2.accumulateWeighted(gray, frameAvg, 0.5)
     frameDelta = cv2.absdiff(gray, cv2.convertScaleAbs(frameAvg))
 
