@@ -4,6 +4,7 @@ import json
 import time
 import argparse
 import imutils
+from imutils.object_detection import non_max_suppression
 import skimage.transform as transform
 
 
@@ -14,16 +15,24 @@ args = vars(parser.parse_args())
 conf = json.load(open(args["conf"]))
 
 camera = cv2.VideoCapture(0)
+hog = cv2.HOGDescriptor()
+hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+
 time.sleep(conf["camera_warmup_time"])
 frameAvg = None
+framesSinceMotion = 0
 
 while True:
+    motionDetected = False
+
     (grabbed, frame) = camera.read()
 
     if not grabbed:
         break
 
     frame = imutils.resize(frame, height=conf["resolution"][0], width=conf["resolution"][1])
+    original = frame.copy()
+
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     gray = cv2.GaussianBlur(gray, (21,21), 0)
 
@@ -41,18 +50,28 @@ while True:
     for contour in contours:
         if cv2.contourArea(contour) < conf["min_area"]:
             continue
+        motionDetected = True
 
-        (x, y, w, h) = cv2.boundingRect(contour)
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    framesSinceMotion = 0 if motionDetected else framesSinceMotion + 1
 
-        if conf["show_video"]:
-            cv2.imshow("Security Feed", frame)
-            cv2.imshow("Thresh", threshold)
-            cv2.imshow("Frame Delta", frameDelta)
+# Human Detection if there has been large motion
+    if framesSinceMotion < conf["max_frames_since_motion"]:
+        (rectangles, weights) = hog.detectMultiScale(frame, winStride=(5, 5),
+                                                padding=(8, 8), scale=1.05)
+        rectangles = np.array([[x, y, x + w, y + h] for (x, y, w, h) in rectangles])
+        supressed = non_max_suppression(rectangles, probs=None, overlapThresh=conf["overlap_thresh"])
 
-            key = cv2.waitKey(1) & 0xFF
+        for (xA, yA, xB, yB) in supressed:
+            cv2.rectangle(frame, (xA, yA), (xB, yB), (0, 255, 0), 2)
 
-            if key == ord("q"):
-                break
+    if conf["show_video"]:
+        cv2.imshow("Security Feed", frame)
+        cv2.imshow("Thresh", threshold)
+        cv2.imshow("Frame Delta", frameDelta)
+
+        key = cv2.waitKey(1) & 0xFF
+
+        if key == ord("q"):
+            break
 camera.release()
 cv2.destroyAllWindows()
