@@ -1,10 +1,13 @@
 {
 	"show_video": true,
-    "min_motion_frames": 8,
 	"camera_warmup_time": 2.5,
 	"delta_thresh": 5,
-	"resolution": [720, 480],
+  	"red_thresh": 180,
+	"resolution": [640, 480],
 	"overlap_thresh": 0.65,
     "max_frames_since_motion": 60,
-	"min_area": 5000
+	"min_delta_area": 5000,
+    "min_red_area": 4000,
+    "green_boundary": [[29, 86, 6], [64, 255, 255]],
+    "min_radius": 10
 }
