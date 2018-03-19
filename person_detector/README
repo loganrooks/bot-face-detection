@@ -1,0 +1,4 @@
+Have code that can track a green ball, and code that can determine dist given a reference image
+#Next Steps#
+
+Combine the two together, test on laptop, and try running it on the rpi
