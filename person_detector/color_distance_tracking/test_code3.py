@@ -124,7 +124,13 @@ while True:
                 cv2.putText(frame, "%.2fcm" % (inches),
                 (frame.shape[1] - 190, frame.shape[0] - 150), cv2.FONT_HERSHEY_SIMPLEX,
                 1.0, (0, 255, 0), 3)
+                #offset_x = frame.shape[0] 
                 
+                
+                offset_x = frame.shape[0]/2 - x
+                offset_y = frame.shape[1]/2 - y
+                print("offset", offset_x, offset_y)
+
         if x!= None:
             #will start tracking after first image
             old_x = x
