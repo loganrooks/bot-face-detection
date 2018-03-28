@@ -10,23 +10,6 @@ void setup() {
   tmrpcm.volume(1);
 }
 
-void loop() {
-  
-  Wire.begin(9); 
-  // Attach a function to trigger when something is received.
-  Wire.onReceive(receiveEvent);
-  
-  if (x=='0'){
-    speakerActivate(0);
-  }
-  
-  if(x=='1'){
-    speakerActivate(1);
-  }
-    
-}
-
-
 void speakerActivate(int code){
   noInterrupts();
   if (SD.begin(SD_Chipselect)){return ;}
@@ -41,3 +24,23 @@ void speakerActivate(int code){
 void receiveEvent(int bytes) {
   x = Wire.read();    // read one character from the I2C
 }
+void loop() {
+  /*
+  Wire.begin(9); 
+  // Attach a function to trigger when something is received.
+  Wire.onReceive(receiveEvent);
+  */
+  if (x==0){
+    speakerActivate(0);
+  }
+
+  if(x==1){
+    speakerActivate(1);
+  }
+  delay(3000);
+}
+
+
+
+
+
