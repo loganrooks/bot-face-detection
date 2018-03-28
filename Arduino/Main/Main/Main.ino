@@ -287,7 +287,7 @@ void naptime(){
   digitalWrite(M1, LOW);
   digitalWrite(M2, LOW);
   speakerActivate(4); //"It's nap time!"
-  //face(2); //animation of closing eyes
+  face(2); //animation of closing eyes
   speakerActivate(5); //('Snoring.wav');
   delay(10);
   speakerActivate(6); //displayLCD("Wakeup.wav"); /"Ah that was a good nap! I need coffee"
@@ -345,6 +345,7 @@ void loop()
   Serial.print("Distance to obstacle is ");
   Serial.print(ultra_dist);
   Serial.println(" cm");
+  face(1);
   
   // If too close to any object(wither target/obstacle), < 20cm, STOP, and decide for the next move.
   if(ultra_dist <= 20){
