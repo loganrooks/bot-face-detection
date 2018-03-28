@@ -79,7 +79,7 @@ void setup() {
   pinMode(M1,OUTPUT);
   pinMode(M2,OUTPUT);
   pinMode(4, OUTPUT); 
-	
+  
   
 //  lc.shutdown(0,false);       //The MAX72XX is in power-saving mode on startup
 //  lc.setIntensity(0,15);      // Set the brightness to maximum value
@@ -383,16 +383,16 @@ void loop()
   if(Serial.available() > 0){
     
     incomingByte = Serial.read();
-		switch((char)incomingByte){
-		 case '0':
-			speakerActivate(0); //different user
-		  break;
-		 case '1':
-			speakerActivate(0); //different user
-		  break;
+    switch((char)incomingByte){
+     case '0':
+      speakerActivate(0); //different user
+      break;
+     case '1':
+      speakerActivate(0); //different user
+      break;
 
-		 default:
-		   break;
+     default:
+       break;
       } 
     }
 }
