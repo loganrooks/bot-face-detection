@@ -371,10 +371,10 @@ void loop()
     
     incomingByte = Serial.read();
     switch((char)incomingByte){
-     case '0':
+     case 0:
       speakerActivate(0); //different user
       break;
-     case '1':
+     case 1:
       speakerActivate(0); //different user
       break;
 

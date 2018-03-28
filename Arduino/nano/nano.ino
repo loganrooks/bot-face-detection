@@ -31,7 +31,9 @@ void loop() {
   Wire.onReceive(receiveEvent);
   */
   if (x==0){
-    speakerActivate(0);
+    //speakerActivate(0);
+    char* file[ ] = {String(0).concat(".wav")};
+    tmrpcm.play(file[0]);
   }
 
   if(x==1){
