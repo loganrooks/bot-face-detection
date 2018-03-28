@@ -8,6 +8,7 @@
 #include <LedControl.h>
 #include <Servo.h>
 #include <NewPing.h>
+#include "binary.h"
 
 
 int E1 = 3;
@@ -40,32 +41,9 @@ struct Coordinate {float x; float y;};
 NewPing sonar(trigPin, echoPin, max_distance);
 
 
-/***
-MaxMatrix m(DIN, CLK, CS, maxInUse);
 
 
-char smile01[] = {8, 8,
-                  B00111100,
-                  B01000010,
-                  B10010101,
-                  B10100001,
-                  B10100001,
-                  B10010101,
-                  B01000010,
-                  B00111100
-                 };
-char smile02[] = {8, 8,
-                  B00111100,
-                  B01000010,
-                  B10010101,
-                  B10010001,
-                  B10010001,
-                  B10010101,
-                  B01000010,
-                  B00111100
-                 }; */
-
-LedControl lc=LedControl(DIN,CLK,CS,0);
+LedControl lc=LedControl(DIN,CLK,CS,1);
 
 
 TMRpcm tmrpcm;
@@ -82,7 +60,7 @@ void setup() {
   
   
   lc.shutdown(0,false);       //The MAX72XX is in power-saving mode on startup
-  lc.setIntensity(0,15);      // Set the brightness to maximum value
+  lc.setIntensity(0,8);      // Set the brightness to maximum value
   lc.clearDisplay(0);
 }
 
@@ -248,36 +226,43 @@ void obstacle_avoid(){
 /***Displaying faces on the LED Matrix ***/
 void face(int n){
     
-    byte smile[8]=   {0x3C,0x42,0xA5,0x81,0xA5,0x99,0x42,0x3C};
-    byte neutral[8]= {0x3C,0x42,0xA5,0x81,0xBD,0x81,0x42,0x3C};
-    byte frown[8]=   {0x3C,0x42,0xA5,0x81,0x99,0xA5,0x42,0x3C};
-    
-    
-    switch(n){
-      case '0':
+    // happy face
+byte smile[8]= {B00111100,B01000010,B10100101,B10000001,B10100101,B10011001,B01000010,B00111100};
+// neutral face
+byte neutral[8]={B00111100, B01000010,B10100101,B10000001,B10111101,B10000001,B01000010,B00111100};
+// sad face
+byte frown[8]= {B00111100,B01000010,B10100101,B10000001,B10011001,B10100101,B01000010,B00111100};
+
+    if(n == 0){
       printByte(smile);
       delay(1000);
-      break;
-    
-      case '1':
+    }
+    else if(n ==1 ){
       printByte(neutral);
       delay(1000);
-      break;
+    }
       
-      case '2':
+     else if(n==2){
       printByte(frown);
-      break;
+      delay(1000);
     }
 }
 
 
-void printByte(byte character [])
+  
+ 
+void printByte(byte sf[])
 {
-  int i = 0;
-  for(i=0;i<8;i++)
-  {
-    lc.setRow(0,i,character[i]);
-  }
+  // Display sad face
+  lc.setRow(0,0,sf[0]);
+  lc.setRow(0,1,sf[1]);
+  lc.setRow(0,2,sf[2]);
+  lc.setRow(0,3,sf[3]);
+  lc.setRow(0,4,sf[4]);
+  lc.setRow(0,5,sf[5]);
+  lc.setRow(0,6,sf[6]);
+  lc.setRow(0,7,sf[7]);
+
 }
 
 
@@ -287,7 +272,7 @@ void naptime(){
   digitalWrite(M1, LOW);
   digitalWrite(M2, LOW);
   speakerActivate(4); //"It's nap time!"
-  face(2); //animation of closing eyes
+
   speakerActivate(5); //('Snoring.wav');
   delay(10);
   speakerActivate(6); //displayLCD("Wakeup.wav"); /"Ah that was a good nap! I need coffee"
@@ -326,6 +311,7 @@ void speakerActivate(int code){
 void loop()
 {
   //Obtain readings from ultrasonic sensot
+  face(1);
   /*
   Serial.print("Ping: ");
   dist = sonar.ping_cm();  
@@ -335,6 +321,7 @@ void loop()
   head();
   forward();
   */
+  
  struct Coordinate target = get_target_coor();
 
    float target_dist = get_distance(target);
@@ -345,8 +332,7 @@ void loop()
   Serial.print("Distance to obstacle is ");
   Serial.print(ultra_dist);
   Serial.println(" cm");
-  face(1);
-  
+
   // If too close to any object(wither target/obstacle), < 20cm, STOP, and decide for the next move.
   if(ultra_dist <= 20){
     Stop();
@@ -378,7 +364,7 @@ void loop()
     Stop();
   }
 
-
+  
 
   
   if(Serial.available() > 0){
@@ -396,4 +382,5 @@ void loop()
        break;
       } 
     }
+    
 }

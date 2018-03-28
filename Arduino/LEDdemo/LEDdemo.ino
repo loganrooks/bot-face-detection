@@ -5,7 +5,7 @@
  http://randomnerdtutorials.com/
 */
 
-#include "LedControl.h"
+#include <LedControl.h>
 #include "binary.h"
 
 /*
@@ -13,7 +13,7 @@
  CLK connects to pin 11
  CS connects to pin 10 
 */
-LedControl lc=LedControl(12,11,10,1);
+LedControl lc=LedControl(0,1,2,1);
 
 // delay time between faces
 unsigned long delaytime=1000;
