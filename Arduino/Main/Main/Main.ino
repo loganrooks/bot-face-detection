@@ -5,7 +5,7 @@
 #include <TMRpcm.h>
 #define SD_Chipselect 11
 
-//#include <LedControl.h>
+#include <LedControl.h>
 #include <Servo.h>
 #include <NewPing.h>
 
@@ -65,7 +65,7 @@ char smile02[] = {8, 8,
                   B00111100
                  }; */
 
-//LedControl lc=LedControl(DIN,CLK,CS,0);
+LedControl lc=LedControl(DIN,CLK,CS,0);
 
 
 TMRpcm tmrpcm;
@@ -81,9 +81,9 @@ void setup() {
   pinMode(4, OUTPUT); 
   
   
-//  lc.shutdown(0,false);       //The MAX72XX is in power-saving mode on startup
-//  lc.setIntensity(0,15);      // Set the brightness to maximum value
-//  lc.clearDisplay(0);
+  lc.shutdown(0,false);       //The MAX72XX is in power-saving mode on startup
+  lc.setIntensity(0,15);      // Set the brightness to maximum value
+  lc.clearDisplay(0);
 }
 
 /* Direction control functions */
@@ -246,7 +246,7 @@ void obstacle_avoid(){
 }
 
 /***Displaying faces on the LED Matrix ***/
-/*void face(int n){
+void face(int n){
     
     byte smile[8]=   {0x3C,0x42,0xA5,0x81,0xA5,0x99,0x42,0x3C};
     byte neutral[8]= {0x3C,0x42,0xA5,0x81,0xBD,0x81,0x42,0x3C};
@@ -270,13 +270,13 @@ void obstacle_avoid(){
     }
 }
 
-*/
+
 void printByte(byte character [])
 {
   int i = 0;
   for(i=0;i<8;i++)
   {
-//    lc.setRow(0,i,character[i]);
+    lc.setRow(0,i,character[i]);
   }
 }
 
