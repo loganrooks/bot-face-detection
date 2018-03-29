@@ -49,7 +49,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	image = frame.array
         
         #resize frame
-        image = imutils.resize(image, width = 300)
+        #image = imutils.resize(image, width = 300)
 
         #if frameAvg is None: # Initialize frame average
         #    frameAvg = image.copy().astype("float")
@@ -140,12 +140,16 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                         #print("Old_radius", old_radius)
                         old_radius = radius
                         #print("radius", radius)  
-   
+                # if the `q` key was pressed, break from the loop
+                #key = cv2.waitKey(1) 
+                #if key == ord("q"):
+                #        break
+                #
         #add dist calculation
 
         # show the frame
 	cv2.imshow("Frame", image)
-	key = cv2.waitKey(1) & 0xF
+	key = cv2.waitKey(1) #& 0xF
  
 	# if the `q` key was pressed, break from the loop
 	if key == ord("q"):
