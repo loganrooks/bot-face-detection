@@ -31,10 +31,8 @@ def tracking(frame, greenboundary, KNOWN_PIXEL_WIDTH, KNOWN_WIDTH = 7, KNOWN_DIS
     # define the lower and upper boundaries of the "green"
     # ball in the HSV color space, then initialize the
     # list of tracked points
-    greenLower = (29, 86, 6)
-    greenUpper = (64, 255, 255)
     focalLength = (KNOWN_PIXEL_WIDTH * KNOWN_DISTANCE) / KNOWN_WIDTH
-    
+    is_ball = False
     x, y, radius = None, None, None
 
     # convert colr scheme
@@ -65,20 +63,17 @@ def tracking(frame, greenboundary, KNOWN_PIXEL_WIDTH, KNOWN_WIDTH = 7, KNOWN_DIS
         M = cv2.moments(c)
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
-        if radius > 5 :
+        if radius > 5:
             # draw the circle and centroid on the frame,
             # then update the list of tracked points
-            cv2.circle(frame, (int(x), int(y)), int(radius),(0, 255, 255), 2)
+            is_ball = True
+            cv2.circle(frame, (int(x), int(y)), int(radius), (0, 255, 255), 2)
             cv2.circle(frame, center, 5, (0, 0, 255), -1)
 
             distance = distance_to_camera(KNOWN_WIDTH, focalLength, radius)
-
-
-            offset_x = frame.shape[0]/2 - x
-            offset_y = frame.shape[1]/2 - y
-            print("offset", offset_x, offset_y)
-            return distance, offset_x, offset_y
-        
+            offset = [frame.shape[0]/2 - x, frame.shape[1]/2 - y]
+            return is_ball, distance, offset
+    return is_ball, None, None, None
 
         
 

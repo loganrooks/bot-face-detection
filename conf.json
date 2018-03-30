@@ -14,4 +14,5 @@
 	"min_neighbors": 5,
 	"size_thresh": 2,
 	"min_size": 10
+	"ref_img": 'data/REF_IMG.jpg'
 }
