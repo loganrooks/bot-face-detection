@@ -18,7 +18,7 @@ while counter < 10:
     val = values[counter]
     val = bytes([val])
     num = ser.write(val)
-    print("Bytes sent:",num)
+    print("Bytes sent:",val)
     #parse the data
     # output will terminate after a newline char from arduino
     # newline char in arduino is given by "\r" 
