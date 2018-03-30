@@ -23,14 +23,20 @@ def distance_to_camera(knownWidth, focalLength, perWidth):
     return (knownWidth * focalLength) / perWidth
 
 def calculate_distance(ref_frame, known_width, known_distance):
-
+    gray = cv2.cvtColor(image, cv2)
+    gray = cv2.GaussianBlur(gray, (5, 5), 0)
+    edged = cv2.Canny(gray, 35, 125)
+    cnts, bounds, val = cv2.findContours(edged.copy, cv2,RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    c = max(bounds, key = cv2.contourArea)
+    pixel_width = cv2.minEnclosingCircle(c))
+    return pixel_width
 
 def tracking(frame, greenboundary, consts = {}, KNOWN_WIDTH = 7, KNOWN_DISTANCE = 30):
     # pass in a frame o    # capture frames from the camera
     #for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True)
-   
+    KNOWN_PIXEL_WIDTH = calculate_distance(frame, KNOWN_WIDTH, KNOWN_DISTANCE)   
     
-    KNOWN_PIXEL_WIDTH = 50 #15#250 # px
+    #KNOWN_PIXEL_WIDTH = 50 #15#250 # px
     # define the lower and upper boundaries of the "green"
     # ball in the HSV color space, then initialize the
     # list of tracked points
