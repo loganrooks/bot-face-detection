@@ -1,6 +1,4 @@
-import picamera
-from picamera.array import PiRGBArray
-from SimpleCV import Image
+
 import cv2
 import commands
 import io
@@ -45,6 +43,23 @@ def recognize_faces(img, client, metrics):
             face_descriptions.append(description)
     return face_descriptions
 
+
+def viola_jones(frame, scaleFactor=1.3, minNeighbors=5, minSize=10, threshold=2):
+    face_cascade = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_default.xml')
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor, minNeighbors, minSize=minSize)
+    if len(faces) == 0:
+        return False, None
+    else:
+        maxArea = 0
+        for (x_, y_, w_, h_) in faces:
+            if w_*h_ > maxArea:
+                x = x_
+                y = y_
+                w = w_
+                h = h_
+        roi = frame[y-threshold:y+(h+threshold), x-threshold:x+(w+threshold)]
+        return True, roi
 
 
 
