@@ -23,8 +23,8 @@ void loop(){
 		byte incomingByte = Serial.read();
     //String myString = String(incomingByte);
     //Serial.print(myString);
-    Serial.print("n");
-    /*
+    //Serial.print("n");
+    
 		 if ((char)incomingByte == 'a'){
 			Serial.print("uh-uh");
       digitalWrite(b, LOW);
@@ -32,7 +32,7 @@ void loop(){
 		 else if ((char)incomingByte == 'b'){
 			Serial.println("yep");
       digitalWrite(b, HIGH);
-		 }*/
+		 }
 	} 
   
 	

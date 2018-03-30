@@ -10,7 +10,7 @@ except:
     ser = serial.Serial('/dev/ttyACM1', 9600, 8, 'N', 1, timeout=1)
 
 counter = 0 
-values = ['a','b', 'a','b', 'a','a', 'a','b','a','b']
+values = ['b','b', 'b','b', 'b','b', 'b','b','b','b']
 
 #while True:
 while counter < 10:
