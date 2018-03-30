@@ -1,8 +1,9 @@
 char dataString[50] = {0};
 int a =0; 
-
+int b = 12;
 void setup() {
 Serial.begin(9600);              //Starting serial communication
+pinMode(b,OUTPUT);
 }
  /*
 void loop() {
@@ -19,9 +20,11 @@ void loop(){
 		switch((char)incomingByte){
 		 case 0:
 			Serial.println("uh-uh");
+      digitalWrite(b, LOW);
 		  break;
 		 case 1:
 			Serial.println("yep");
+      digitalWrite(b, HIGH);
 		  break;
 
 		 default:
