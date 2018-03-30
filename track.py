@@ -8,27 +8,17 @@ import serial
 import time
 
 
-
-
-
-# initialize the camera and grab a reference to the raw camera capture
-camera = PiCamera()
-camera.resolution = (640, 480)
-camera.framerate = 32
-rawCapture = PiRGBArray(camera, size=(640, 480))
-
-    
 def distance_to_camera(knownWidth, focalLength, perWidth):
     # compute and return the distance from the maker to the camera
     return (knownWidth * focalLength) / perWidth
 
 def calculate_distance(ref_frame, known_width, known_distance):
-    gray = cv2.cvtColor(image, cv2)
+    gray = cv2.cvtColor(ref_image, cv2)
     gray = cv2.GaussianBlur(gray, (5, 5), 0)
     edged = cv2.Canny(gray, 35, 125)
-    cnts, bounds, val = cv2.findContours(edged.copy, cv2,RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    cnts, bounds, val = cv2.findContours(edged.copy, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     c = max(bounds, key = cv2.contourArea)
-    pixel_width = cv2.minEnclosingCircle(c))
+    pixel_width = cv2.minEnclosingCircle(c)
     return pixel_width
 
 def tracking(frame, greenboundary, consts = {}, KNOWN_WIDTH = 7, KNOWN_DISTANCE = 30):
@@ -45,16 +35,10 @@ def tracking(frame, greenboundary, consts = {}, KNOWN_WIDTH = 7, KNOWN_DISTANCE 
     focalLength = (KNOWN_PIXEL_WIDTH * KNOWN_DISTANCE) / KNOWN_WIDTH
     
     x, y, radius = None, None, None
-    old_x = None
-    old_y = None
-    old_radius = None
     center = None
-    frameAvg = None
-
-    image = frame.array
      
     # convert colr scheme
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)	
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
          
     # construct a mask for the color "green", then perform a series of 
     # dilations and erosions to remove any small blobs left in the mask
@@ -77,7 +61,7 @@ def tracking(frame, greenboundary, consts = {}, KNOWN_WIDTH = 7, KNOWN_DISTANCE 
     # centroid
     # add check to ensure that the area overlaps
     #print( len(cnts))
-    if x ==None:
+    if x == None:
         cnts.sort( key= cv2.contourArea)              
         c_int = len(cnts) -1
         c = cnts[c_int]
@@ -107,13 +91,13 @@ def tracking(frame, greenboundary, consts = {}, KNOWN_WIDTH = 7, KNOWN_DISTANCE 
         cv2.circle(image, (int(x), int(y)), int(radius),(0, 255, 255), 2)
         cv2.circle(image, center, 5, (0, 0, 255), -1)
 
-        inches = distance_to_camera(KNOWN_WIDTH, focalLength, radius)
-        print(inches)
+        distance = distance_to_camera(KNOWN_WIDTH, focalLength, radius)
+
                 
         offset_x = image.shape[0]/2 - x
         offset_y = image.shape[1]/2 - y
-        print("offset", offset_x, offset_y)
-        return inches, offset_x, offset_y
+#        print("offset", offset_x, offset_y)
+        return distance, offset_x, offset_y
         
 
         

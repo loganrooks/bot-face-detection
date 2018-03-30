@@ -25,7 +25,6 @@ def recognize_faces(img, client, metrics):
         if attributes['face']['confidence'] > (threshold-10) and attributes['face']['value'] == 'true': 
             description = merge_two_dicts(
                 {
-                'center': face['center'], \
                 'identity': extract_identity(face['uids'], threshold), \
                 },
                 {
@@ -42,7 +41,7 @@ def viola_jones(frame, scaleFactor=1.3, minNeighbors=5, minSize=10, threshold=2)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, scaleFactor, minNeighbors, minSize=minSize)
     if len(faces) == 0:
-        return False, None
+        return False, None, None
     else:
         maxArea = 0
         for (x_, y_, w_, h_) in faces:
@@ -51,8 +50,9 @@ def viola_jones(frame, scaleFactor=1.3, minNeighbors=5, minSize=10, threshold=2)
                 y = y_
                 w = w_
                 h = h_
+        center = [x + w/2, y + h/2]
         roi = frame[y-threshold:y+(h+threshold), x-threshold:x+(w+threshold)]
-        return True, roi
+        return True, roi, center
 
 
 
