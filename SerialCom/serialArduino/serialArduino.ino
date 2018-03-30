@@ -18,10 +18,10 @@ void loop(){
 		incomingByte = Serial.read();
 		switch((char)incomingByte){
 		 case '0':
-			my_blink(10);
+			Serial.println("uh-uh");
 		  break;
 		 case '1':
-			my_blink(12);
+			Serial.println("yep");
 		  break;
 
 		 default:
