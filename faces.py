@@ -1,11 +1,4 @@
-
 import cv2
-import commands
-import io
-import socket
-import time
-import imutils
-from face_client import FaceClient
 
 def extract_identity(uids, threshold):
     max_confidence = 0
