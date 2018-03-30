@@ -23,7 +23,7 @@ while counter < 10:
     #parse the data
     # output will terminate after a newline char from arduino
     # newline char in arduino is given by "\r" 
-    time.sleep(1)
+    time.sleep(5)
 
 
     #val = 0
@@ -31,7 +31,5 @@ while counter < 10:
     #ser.write(val)
     counter +=1
     output = ser.readline()
-    while (output == b''):
-        output = ser.readline()
     print("Output:",output)
 #ser.write('3')
