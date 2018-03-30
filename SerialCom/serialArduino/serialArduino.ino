@@ -1,6 +1,7 @@
 char dataString[50] = {0};
 int a =0; 
 int b = 12;
+const int ledPin = 13;
 void setup() {
 Serial.begin(9600);              //Starting serial communication
 pinMode(b,OUTPUT);
@@ -15,20 +16,37 @@ void loop() {
 */
 void loop(){
 
-	if(Serial.available() > 0){
-		char incomingByte = Serial.read();
-		switch((char)incomingByte){
-		 case 0:
-			Serial.println("uh-uh");
+	if(Serial.available()){
+    flash(Serial.read() - '0');
+	}
+  
+		byte incomingByte = Serial.read();
+    while (incomingByte != 'a' or incomingByte != 'b'){
+      incomingByte = Serial.read();
+      }
+    
+    //String myString = String(incomingByte);
+    //Serial.print(myString);
+    //Serial.print("n");
+    
+		 if ((char)incomingByte == 'a'){
+			Serial.print("uh-uh");
       digitalWrite(b, LOW);
-		  break;
-		 case 1:
+		 }
+		 else if ((char)incomingByte == 'b'){
 			Serial.println("yep");
       digitalWrite(b, HIGH);
-		  break;
-
-		 default:
-		   break;
+		 }
 	} 
-	}
- }
+  
+	
+ void flash(int n)
+{
+  for (int i = 0; i < n; i++)
+  {
+    digitalWrite(ledPin, HIGH);
+    delay(100);
+    digitalWrite(ledPin, LOW);
+    delay(100);
+  }
+}

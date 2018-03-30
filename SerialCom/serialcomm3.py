@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import serial, time
+import serial , string, time
 
 output = " " 
 #need to account for fact that the comport can change
@@ -10,21 +10,28 @@ except:
     ser = serial.Serial('/dev/ttyACM1', 9600, 8, 'N', 1, timeout=1)
 
 counter = 0 
-values = [1,0,1,0,1,1,0,1,0,1]
+values = ['b','b', 'b','b', 'b','b', 'b','b','b','b']
 
 #while True:
 while counter < 10:
         #while output != "":
     val = values[counter]
-    val = bytes([val])
+    #val = bytes(val)
+    val = val.encode()
     num = ser.write(val)
-    print("Bytes sent:",num)
+    print("Bytes sent:",val)
     #parse the data
     # output will terminate after a newline char from arduino
     # newline char in arduino is given by "\r" 
     time.sleep(1)
-    val = 0 
-    val =bytes([val])
-    ser.write(val)
+
+
+    #val = 0
+    #val =bytes([val])
+    #ser.write(val)
     counter +=1
+    output = ser.readline()
+    while (output == b''):
+        output = ser.readline()
+    print("Output:",output)
 #ser.write('3')
