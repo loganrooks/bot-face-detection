@@ -7,6 +7,7 @@ import faces
 from face_client import FaceClient
 import json
 import argparse
+import vision
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-c", "--conf", default="./conf.json", help="path to JSON config file")
@@ -28,14 +29,17 @@ camera = picamera.PiCamera()
 camera.resolution = conf['resolution']
 camera.framerate = conf['frame_rate']
 rawCapture = PiRGBArray(camera, size=conf['resolution'])
-time.sleep(2)
+time.sleep(conf["camera_warmup_time"])
+
+frameAvg = None
+framesSinceMotion = 0
 
 for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
     frame = f.array
     frame = imutils.resize(frame, width=400)
-
-    is_face, face = faces.viola_jones(frame, conf["scale_factor"], conf["min_neighbors"], conf["min_size"], conf["size_thresh"])
-    if is_face:
-        cv2.imwrite(filename, face)
-        descriptions = faces.recognize_faces(img_addr, client, metrics)
-        print descriptions
+    framesSinceMotion, frameAvg = vision.motion_detection(frame, conf["delta_thresh"], conf["min_delta_area"], frameAvg, framesSinceMotion)
+    if framesSinceMotion < conf["max_frames_since_motion"]:
+        is_face, face = faces.viola_jones(frame, conf["scale_factor"], conf["min_neighbors"], conf["min_size"], conf["size_thresh"])
+        if is_face:
+            cv2.imwrite(filename, face)
+            descriptions = faces.recognize_faces(img_addr, client, metrics)
