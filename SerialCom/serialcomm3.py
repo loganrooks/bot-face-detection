@@ -16,7 +16,7 @@ values = [1,0,1,0,1,1,0,1,0,1]
 while counter < 10:
         #while output != "":
     val = values[counter]
-    val = bytes(val)
+    val = bytes([val])
     #val = val.encode()
     num = ser.write(val)
     print("Bytes sent:",val)
