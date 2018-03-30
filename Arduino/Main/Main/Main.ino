@@ -175,7 +175,23 @@ float get_distance(struct Coordinate target){
   return dist;
 }
 
-void obstacle_avoid(){
+
+void obstacle_avoid(struct Coordinate target){
+  float ang = get_angle(target);
+  if(ang >= 0){
+    turn(1);   // Turn right
+    turn(1);   // Turn right
+    forward(255); // forward
+    forward(255); // forward
+  }else{
+    turn(-1);    //Turn left
+    turn(-1);    //Turn left
+    forward(255); // forward
+    forward(255); // forward
+  }  
+}
+
+void obstacle_avoid_fixed(){
   turn(-1);   // Check left side distance
   int left_dist = ultrasonic_dist();
   turn(1);    
@@ -337,7 +353,8 @@ void loop()
   if(ultra_dist <= 20){
     Stop();
     if(abs(ultra_dist-target_dist) >= 5){  // The object at front is NOT the target
-       obstacle_avoid();
+       obstacle_avoid(target);
+//       obstacle_avoid_fixed();
        //Because we are updating for a long time, need to refresh parameters
        target = get_target_coor();
        target_dist = get_distance(target);
