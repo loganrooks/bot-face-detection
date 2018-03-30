@@ -21,17 +21,20 @@ void loop(){
 	}
   */
 		byte incomingByte = Serial.read();
-    
+    //Serial.print(incomingByte);
     //String myString = String(incomingByte);
     //Serial.print(myString);
     //Serial.print("n");
-    
-		 if (incomingByte == 0){
+    String on = "on";
+    String off = "off";
+		 if (incomingByte == 'a'){
 			//Serial.print("uh-uh");
+      Serial.print((String)incomingByte);
       digitalWrite(b, LOW);
 		 }
-		 else if (incomingByte == 1){
-			//Serial.println("yep");
+		 else if (incomingByte == 'b'){
+			//Serial.print("yep");
+      Serial.print((String)incomingByte);
       digitalWrite(b, HIGH);
 		 }
 	} 
