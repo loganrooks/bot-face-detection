@@ -19,8 +19,12 @@ void loop(){
 	if(Serial.available()){
     flash(Serial.read() - '0');
 	}
- 
+  
 		byte incomingByte = Serial.read();
+    while (incomingByte != 'a' or incomingByte != 'b'){
+      incomingByte = Serial.read();
+      }
+    
     //String myString = String(incomingByte);
     //Serial.print(myString);
     //Serial.print("n");

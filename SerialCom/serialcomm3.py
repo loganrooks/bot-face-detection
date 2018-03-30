@@ -31,5 +31,7 @@ while counter < 10:
     #ser.write(val)
     counter +=1
     output = ser.readline()
+    while (output == b''):
+        output = ser.readline()
     print("Output:",output)
 #ser.write('3')
