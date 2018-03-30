@@ -21,19 +21,16 @@ void loop(){
 	}
   
 		byte incomingByte = Serial.read();
-    while (incomingByte != 'a' or incomingByte != 'b'){
-      incomingByte = Serial.read();
-      }
     
     //String myString = String(incomingByte);
     //Serial.print(myString);
     //Serial.print("n");
     
-		 if ((char)incomingByte == 'a'){
+		 if (incomingByte == 0){
 			Serial.print("uh-uh");
       digitalWrite(b, LOW);
 		 }
-		 else if ((char)incomingByte == 'b'){
+		 else if (incomingByte == 1){
 			Serial.println("yep");
       digitalWrite(b, HIGH);
 		 }
