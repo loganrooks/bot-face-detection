@@ -10,12 +10,12 @@ except:
     ser = serial.Serial('/dev/ttyACM1', 9600, 8, 'N', 1, timeout=1)
 
 counter = 0 
-
+values = [1,0,1,0,1,1,0,1,0,1]
 
 #while True:
 while counter < 10:
         #while output != "":
-    val = 1
+    val = values[counter]
     val = bytes([val])
     num = ser.write(val)
     print("Bytes sent:",num)
@@ -23,8 +23,8 @@ while counter < 10:
     # output will terminate after a newline char from arduino
     # newline char in arduino is given by "\r" 
     time.sleep(3)
-    val = 0
-    val =bytes([val])
-    ser.write(val)
+    #val = 0
+    #val =bytes([val])
+    #ser.write(val)
     counter +=1
 #ser.write('3')
