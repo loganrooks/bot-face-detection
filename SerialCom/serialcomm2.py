@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import serial , string, time
+import serial, time
 
 output = " " 
 #need to account for fact that the comport can change
@@ -22,9 +22,9 @@ while counter < 10:
     #parse the data
     # output will terminate after a newline char from arduino
     # newline char in arduino is given by "\r" 
-    time.sleep(3)
-    #val = 0
-    #val =bytes([val])
-    #ser.write(val)
+    time.sleep(1)
+    val = 0 
+    val =bytes([val])
+    ser.write(val)
     counter +=1
 #ser.write('3')
