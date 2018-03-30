@@ -19,16 +19,20 @@ void loop(){
 	if(Serial.available()){
     flash(Serial.read() - '0');
 	}
+ 
 		byte incomingByte = Serial.read();
-    
-		 if (incomingByte == 'a'){
-			Serial.println("uh-uh");
+    //String myString = String(incomingByte);
+    //Serial.print(myString);
+    Serial.print("n");
+    /*
+		 if ((char)incomingByte == 'a'){
+			Serial.print("uh-uh");
       digitalWrite(b, LOW);
 		 }
-		 else if (incomingByte == 'b'){
+		 else if ((char)incomingByte == 'b'){
 			Serial.println("yep");
       digitalWrite(b, HIGH);
-		 }
+		 }*/
 	} 
   
 	
