@@ -15,11 +15,11 @@ void loop() {
 }
 */
 void loop(){
-
+  /*
 	if(Serial.available()){
     flash(Serial.read() - '0');
 	}
-  
+  */
 		byte incomingByte = Serial.read();
     
     //String myString = String(incomingByte);
@@ -27,11 +27,11 @@ void loop(){
     //Serial.print("n");
     
 		 if (incomingByte == 0){
-			Serial.print("uh-uh");
+			//Serial.print("uh-uh");
       digitalWrite(b, LOW);
 		 }
 		 else if (incomingByte == 1){
-			Serial.println("yep");
+			//Serial.println("yep");
       digitalWrite(b, HIGH);
 		 }
 	} 
